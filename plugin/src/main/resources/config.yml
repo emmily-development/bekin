@@ -1,0 +1,4 @@
+storage:
+  platform: "json" # Available:
+                   # - JSON
+                   # - Mongo

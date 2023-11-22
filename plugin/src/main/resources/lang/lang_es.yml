@@ -1,0 +1,27 @@
+hologram:
+  info:
+    content:
+      - "&6Holograms API by &cEmmily &fDevelopment"
+      - ""
+      - "&e/hologram &7- Ver esta información"
+      - "&e/hologram create &a<id> &7- Crear un nuevo holograma"
+      - "&e/hologram add-line &a<hologram> <content> &7- Añadir una nueva línea a un holograma"
+      - "&e/hologram set-line &a<hologram> <index> <content> &7- Cambiar el contenido de una línea de un holograma"
+      - "&e/hologram remove-line &a<hologram> <index> &7- Eliminar una línea de un holograma"
+      - "&e/hologram move &a<hologram> &7- Mover un holograma a tu ubicación actual"
+      - "&e/hologram delete &a<hologram> &7- Borrar un holograma"
+      - "&e/hologram settings &a<hologram> &7- Abrir el menú de ajustes de un holograma"
+    navigation:
+      previous: "&7Página anterior"
+      next: "&7Página siguiente"
+      footer: "%previous% - %next%"
+  added-line: "&7Línea añadida con éxito al holograma &e%hologram%&7: &r%line%"
+  line-not-found: "&7No se ha podido encontrar esa línea"
+  replaced-line: "&7Línea &e%index% &7reemplazada con éxito en el holograma &e%hologram%&7: &r%line%"
+  deleted-line: "&7Línea &e%index% eliminada con éxito del holograma &e%hologram%"
+  already-exists: "&7El holograma &e%hologram% &7ya existe"
+  error-deleting: "&7Ha ocurrido un error mientras intentábamos borrar el holograma &e%hologram%&7, pídele a un administrador que revise la consola"
+  created: "&7El holograma &e%hologram% &7ha sido creado con éxito"
+  deleted: "&7El holograma &e%hologram% &7ha sido eliminado con éxito"
+  confirm-deletion: "&7Vuelve a ejecutar el comando para eliminar el holograma"
+  moved: "&7El holograma &e%hologram% &7ha sido movido exitosamente hacia &e%new-position%"

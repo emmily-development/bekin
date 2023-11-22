@@ -1,0 +1,4 @@
+name: "bekin"
+author: "emmilydev"
+version: "${project.version}"
+main: "dev.emmily.bekin.plugin.BekinPlugin"

@@ -1,0 +1,34 @@
+{
+  "id": "welcome",
+  "position": {
+    "world": "spawn",
+    "x": 10,
+    "y": 65,
+    "z": 0
+  },
+  "lines": [
+    {
+      "type": "simple",
+      "textProvider": {
+        "type": "fixed",
+        "text": "&#a903fcWelcome to my server!"
+      }
+    },
+    {
+      "type": "clickable",
+      "textProvider": {
+        "type": "i18n",
+        "path": "path.to.my.i18n.message"
+      },
+      "clickAction": {
+        "type": "scripted",
+        "path": "./welcomeClickHandler.js"
+      }
+    }
+  ],
+  "renderAuthorizer": {
+    "type": "scripted",
+    "path": "./welcomeAuthorizer.js"
+  },
+  "renderDistance": 8
+}

@@ -1,0 +1,26 @@
+hologram:
+  info:
+    content:
+      - "&6Holograms API by &cEmmily &fDevelopment"
+      - ""
+      - "&e/hologram &7- Show this info"
+      - "&e/hologram create &a<id> &7- Create a new hologram"
+      - "&e/hologram add-line &a<hologram> <content> &7- Add a new line to a hologram"
+      - "&e/hologram set-line &a<hologram> <index> <content> &7- Set the line content of a hologram"
+      - "&e/hologram remove-line &a<hologram> <index> &7- Remove a line from a hologram"
+      - "&e/hologram move &a<hologram> &7- Move a hologram to your current location"
+      - "&e/hologram delete &a<hologram> &7- Delete a hologram"
+      - "&e/hologram settings &a<hologram> &7- Open the settings menu of a hologram"
+    navigation:
+      previous: "&7Previous page"
+      next: "&7Next page"
+      footer: "%previous% - %next%"
+  added-line: "&7Successfully added a line to the hologram &e%hologram%&7: &r%line%"
+  line-not-found: "&7Couldn't find the provided line"
+  replaced-line: "&7Successfully replaced the line &e%index% &7from the hologram &e%hologram%&7: &r%line%"
+  deleted-line: "&7Successfully deleted the line &e%index% &7from the hologram &e%hologram%"
+  already-exists: "&7The hologram &e%hologram% &7already exists"
+  error-deleting: "&7An error has occurred while trying to delete the hologram &e%hologram%&7, ask an administrator to check the console"
+  deleted: "&7Successfully deleted the hologram &e%hologram%"
+  confirm-deletion: "&7Re-run the command to delete the hologram"
+  moved: "&7Successfully moved the hologram &e%hologram% &7to &e%new-position%"
