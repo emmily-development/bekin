@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -50,6 +49,8 @@ public class Hologram
     this.renderAuthorizer = renderAuthorizer;
     this.renderDistance = renderDistance;
     this.viewers = new ArrayList<>();
+
+    this.lines.forEach(line -> line.setUnderlyingHologram(id));
   }
 
   @Override
@@ -147,7 +148,7 @@ public class Hologram
     private String id;
     private Vector3D position;
     private List<HologramLine> lines;
-    private RenderAuthorizer renderConditions;
+    private RenderAuthorizer renderAuthorizer;
     private int renderDistance;
 
     public Vector3D nextPosition() {
@@ -213,8 +214,8 @@ public class Hologram
       return addLines(Arrays.asList(lines));
     }
 
-    public Builder renderConditions(RenderAuthorizer renderConditions) {
-      this.renderConditions = renderConditions;
+    public Builder renderAuthorizer(RenderAuthorizer renderAuthorizer) {
+      this.renderAuthorizer = renderAuthorizer;
 
       return this;
     }
@@ -230,8 +231,8 @@ public class Hologram
       checkNotNull(position, "position");
       checkNotNull(lines, "lines");
 
-      if (renderConditions == null) {
-        renderConditions = player -> true;
+      if (renderAuthorizer == null) {
+        renderAuthorizer = RenderAuthorizer.empty();
       }
 
       if (renderDistance == 0) {
@@ -240,7 +241,7 @@ public class Hologram
 
       return new Hologram(
         id, position, lines,
-        renderConditions,
+        renderAuthorizer,
         renderDistance
       );
     }

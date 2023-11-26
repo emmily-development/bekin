@@ -1,12 +1,11 @@
 package dev.emmily.bekin.core.listener;
 
-import dev.emmily.bekin.api.hologram.Hologram;
-import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLineDecorator;
-import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
-import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
+import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
 import dev.emmily.bekin.api.spatial.raytracing.Ray;
+import dev.emmily.bekin.api.spatial.tree.CopyOnWritePRTree;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.util.lang.LanguageProvider;
+import dev.emmily.sigma.api.repository.ModelRepository;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,10 +14,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class HologramClickListener
   implements Listener {
-  private final HologramRegistry hologramRegistry;
+  private final ModelRepository<CopyOnWritePRTree<ClickableHologramLine>> prTreeRepository;
 
-  public HologramClickListener(HologramRegistry hologramRegistry) {
-    this.hologramRegistry = hologramRegistry;
+  public HologramClickListener(ModelRepository<CopyOnWritePRTree<ClickableHologramLine>> prTreeRepository) {
+    this.prTreeRepository = prTreeRepository;
   }
 
   @EventHandler
@@ -30,7 +29,7 @@ public class HologramClickListener
     double yaw = Math.toRadians(eyeLocation.getYaw());
     double pitch = Math.toRadians(eyeLocation.getPitch());
 
-    Vector3D direction = new Vector3D(
+    Vector3D direction = Vector3D.of(
       world,
       -Math.sin(yaw) * Math.cos(pitch),
       -Math.sin(pitch),
@@ -41,25 +40,21 @@ public class HologramClickListener
     Ray ray = Ray.trace(Vector3D.fromBukkit(world, eyeLocation.toVector()), direction);
     ray.show(player);
 
-    for (Hologram hologram : hologramRegistry.getAll()) {
-      for (HologramLine line : hologram) {
-        if (!(line instanceof ClickableHologramLineDecorator)) {
-          continue;
-        }
+    String language = LanguageProvider.locale().getLanguage(player);
+    CopyOnWritePRTree<ClickableHologramLine> prTree = prTreeRepository.find(language);
 
-        ClickableHologramLineDecorator clickableLine = (ClickableHologramLineDecorator) line;
-        BoundingBox boundingBox = clickableLine.getBoundingBox(player);
+    if (prTree == null) {
+      return;
+    }
 
-        if (boundingBox == null) {
-          // Should never happen
-          continue;
-        }
+    Vector3D playerPosition = Vector3D.fromBukkit(world, player.getLocation().toVector());
 
-        if (ray.intersectsBox(boundingBox)) {
-          clickableLine.onClick(player);
+    for (ClickableHologramLine line : prTree.find(direction)) {
+      Vector3D linePosition = line.getPosition();
+      double distance = playerPosition.distanceSquared(linePosition);
 
-          break;
-        }
+      if (distance <= 5) {
+        line.onClick(player);
       }
     }
   }

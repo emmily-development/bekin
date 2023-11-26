@@ -1,4 +1,4 @@
-package dev.emmily.bekin.protocol.v1_8_R3.util;
+package dev.emmily.bekin.protocol.v1_8_R3.protocol;
 
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PlayerConnection;

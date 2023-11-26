@@ -1,6 +1,7 @@
 package dev.emmily.bekin.api.hologram.handler;
 
 import dev.emmily.bekin.api.hologram.Hologram;
+import dev.emmily.bekin.api.hologram.spatial.PrTreeRegistry;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
 import me.yushust.message.MessageHandler;
 import org.bukkit.Bukkit;
@@ -13,8 +14,9 @@ import java.lang.reflect.InvocationTargetException;
  * specific players.
  */
 public interface HologramHandler {
-  static HologramHandler getInstance(MessageHandler messageHandler) {
-    return Holder.getInstance(messageHandler);
+  static HologramHandler getInstance(MessageHandler messageHandler,
+                                     PrTreeRegistry prTreeRegistry) {
+    return Holder.getInstance(messageHandler, prTreeRegistry);
   }
 
   /**
@@ -39,6 +41,8 @@ public interface HologramHandler {
    */
   void render(Hologram hologram, Player player);
 
+  void renderForEveryone(Hologram hologram);
+
   /**
    * Hides a hologram for a specific player.
    *
@@ -47,6 +51,8 @@ public interface HologramHandler {
    */
   void hide(Hologram hologram,
             Player player);
+
+  void hideFromEveryone(Hologram hologram);
 
   /**
    * Moves the hologram to a given location.
@@ -67,7 +73,8 @@ public interface HologramHandler {
       .getName()
       .split("\\.")[3];
 
-    static HologramHandler getInstance(MessageHandler messageHandler) {
+    static HologramHandler getInstance(MessageHandler messageHandler,
+                                       PrTreeRegistry prTreeRegistry) {
       if (instance != null) {
         return instance;
       }
@@ -77,8 +84,8 @@ public interface HologramHandler {
           try {
             instance = (HologramHandler) Class
               .forName(String.format(PROTOCOL_CLASS_PATTERN, SERVER_VERSION + ".HologramHandlerImpl"))
-              .getConstructor(MessageHandler.class)
-              .newInstance(messageHandler);
+              .getConstructor(MessageHandler.class, PrTreeRegistry.class)
+              .newInstance(messageHandler, prTreeRegistry);
           } catch (ClassNotFoundException | NoSuchMethodException e) {
             throw new RuntimeException(String.format("your server version (%s) is not supported by bekin", SERVER_VERSION));
           } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {

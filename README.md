@@ -15,11 +15,13 @@ player stats, messages, or any other information in the form of floating text, t
 - Update holograms dynamically to reflect changing information.
 - Customize hologram appearance, position, and interactions.
 - High-performance and efficient hologram rendering.
-- Ray tracing-based interactions for the highest precision in player interactions.
+- ~~Ray tracing-based interactions for the highest precision in player interactions.~~
+- PR-Tree-based indexing for clickable lines, ensuring the highest precision in player interactions.
 
 ## TO-DO
 
-- PR-Tree-based hologram indexing
+- Loader API
+- Loader implementations for JSON, TOML and YAML
 
 ## Getting Started
 
@@ -56,9 +58,21 @@ the [official documentation](https://github.com/emmily-development/bekin/wiki).
 
 Here's a simple example of creating and updating a hologram in your Spigot plugin:
 
+```java
+Hologram hologram = Hologram
+  .builder()
+  .id("welcome")
+  .position(Vector3D.of("spawn", 10, 65, 0))
+  .addLines(
+    HologramLine.line("Static line"),
+    ClickableHologramLine.decorate(HologramLine.line("Clickable line"), player -> player.sendMessage("Hello!"))
+  )
+  .renderAuthorizer(player -> player.hasPermission("holograms.welcome.view"))
+  .build();
+```
 ## Contributing
 
-If you want to contribute to the Bekin Holograms Library, feel free to submit issues, pull requests, or enhancements on
+If you want to contribute to bekin, feel free to submit issues, pull requests, or enhancements on
 the [GitHub repository](https://github.com/yourrepository/bekin).
 
 ## License

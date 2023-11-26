@@ -4,11 +4,11 @@ import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
 
-public abstract class AbstractHologramLineDecorator
+public abstract class AbstractLineDecorator
   implements HologramLine {
   private final HologramLine wrappedLine;
 
-  public AbstractHologramLineDecorator(HologramLine wrappedLine) {
+  public AbstractLineDecorator(HologramLine wrappedLine) {
     this.wrappedLine = wrappedLine;
   }
 
@@ -50,5 +50,15 @@ public abstract class AbstractHologramLineDecorator
   @Override
   public void setSpawned(boolean spawned) {
     wrappedLine.setSpawned(spawned);
+  }
+
+  @Override
+  public String getUnderlyingHologram() {
+    return wrappedLine.getUnderlyingHologram();
+  }
+
+  @Override
+  public void setUnderlyingHologram(String underlyingHologram) {
+    wrappedLine.setUnderlyingHologram(underlyingHologram);
   }
 }

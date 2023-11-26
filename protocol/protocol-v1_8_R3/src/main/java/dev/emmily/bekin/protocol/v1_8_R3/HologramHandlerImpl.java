@@ -3,10 +3,13 @@ package dev.emmily.bekin.protocol.v1_8_R3;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLineDecorator;
+import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
+import dev.emmily.bekin.api.hologram.spatial.PrTreeRegistry;
+import dev.emmily.bekin.api.spatial.tree.CopyOnWritePRTree;
 import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import dev.emmily.bekin.protocol.v1_8_R3.util.MinecraftProtocol;
+import dev.emmily.bekin.api.util.lang.LanguageProvider;
+import dev.emmily.bekin.protocol.v1_8_R3.protocol.MinecraftProtocol;
 import me.yushust.message.MessageHandler;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -19,10 +22,14 @@ import java.util.UUID;
 public class HologramHandlerImpl
   implements HologramHandler {
   private final MessageHandler messageHandler;
+  private final PrTreeRegistry prTreeRegistry;
 
-  public HologramHandlerImpl(MessageHandler messageHandler) {
+  public HologramHandlerImpl(MessageHandler messageHandler,
+                             PrTreeRegistry prTreeRegistry) {
     this.messageHandler = messageHandler;
+    this.prTreeRegistry = prTreeRegistry;
   }
+
 
   @Override
   public void spawn(Hologram hologram) {
@@ -42,7 +49,7 @@ public class HologramHandlerImpl
       armorStand.setInvisible(true);
       armorStand.setCustomNameVisible(true);
 
-      if (!(line instanceof ClickableHologramLineDecorator)) {
+      if (!(line instanceof ClickableHologramLine)) {
         // non-clickable lines don't require a hitbox
         armorStand.n(true);
       }
@@ -106,7 +113,7 @@ public class HologramHandlerImpl
           );
           viewers.add(player.getUniqueId().toString());
 
-          if (line instanceof ClickableHologramLineDecorator) {
+          if (line instanceof ClickableHologramLine) {
             assignBoundingBox(hologram, entity.getBoundingBox(), line, player);
           }
         }
@@ -152,6 +159,7 @@ public class HologramHandlerImpl
 
       Vector3D position = hologram.nextPosition(line);
       entity.setPosition(position.getX(), position.getY(), position.getZ());
+      line.setPosition(position);
     }
 
     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -160,7 +168,7 @@ public class HologramHandlerImpl
       }
 
       for (HologramLine line : hologram) {
-        if (!(line instanceof ClickableHologramLineDecorator)) {
+        if (!(line instanceof ClickableHologramLine)) {
           continue;
         }
 
@@ -178,7 +186,7 @@ public class HologramHandlerImpl
                                  AxisAlignedBB entityBoundingBox,
                                  HologramLine line,
                                  Player player) {
-    ClickableHologramLineDecorator clickableLine = (ClickableHologramLineDecorator) line;
+    ClickableHologramLine clickableLine = (ClickableHologramLine) line;
     double highestX = entityBoundingBox.d;
     double highestY = entityBoundingBox.e / 2;
     double highestZ = entityBoundingBox.f;
@@ -193,5 +201,10 @@ public class HologramHandlerImpl
     String text = line.getContent().apply(player, messageHandler);
     BoundingBox textBoundingBox = BoundingBox.forEntityCustomName(highestHitBoxPoint, text);
     clickableLine.registerBoundingBox(player, textBoundingBox);
+
+    String language = LanguageProvider.locale().getLanguage(player);
+    CopyOnWritePRTree<ClickableHologramLine> prTree = prTreeRegistry.getOrCreate(language);
+
+    prTree.add(clickableLine);
   }
 }

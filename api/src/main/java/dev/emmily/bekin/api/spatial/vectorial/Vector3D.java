@@ -190,6 +190,23 @@ public class Vector3D {
     }
   }
 
+  /**
+   * Calculates the squared Euclidean distance between this vector and the given {@code beta} vector.
+   * The squared Euclidean distance represents the square of the Euclidean distance and is calculated as:
+   * d(p, q)^2 = (q1 - p1)^2 + (q2 - p2)^2 + (q3 - p3)^2
+   *
+   * @param beta The vector to which the squared distance is calculated.
+   * @return The squared Euclidean distance between this vector and the given {@code beta} vector.
+   *         It represents the square of the Euclidean distance in a three-dimensional space.
+   */
+  public double distanceSquared(Vector3D beta) {
+    double deltaX = beta.getX() - getX();
+    double deltaY = beta.getY() - getY();
+    double deltaZ = beta.getZ() - getZ();
+
+    return Math.pow(deltaX, 2) + Math.pow(deltaY, 2) + Math.pow(deltaZ, 2);
+  }
+
   public Vector toBukkit() {
     return new Vector(x, y, z);
   }

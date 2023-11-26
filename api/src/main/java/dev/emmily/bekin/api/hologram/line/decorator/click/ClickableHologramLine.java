@@ -1,9 +1,10 @@
 package dev.emmily.bekin.api.hologram.line.decorator.click;
 
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.decorator.AbstractHologramLineDecorator;
+import dev.emmily.bekin.api.hologram.line.decorator.AbstractLineDecorator;
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.HologramClickAction;
 import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
+import dev.emmily.bekin.api.util.lang.LanguageProvider;
 import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
@@ -23,12 +24,12 @@ import java.util.Map;
  * be placed one below the other, causing collision issues without
  * custom bounding boxes.
  */
-public class ClickableHologramLineDecorator
-  extends AbstractHologramLineDecorator
+public class ClickableHologramLine
+  extends AbstractLineDecorator
   implements HologramLine {
-  public static ClickableHologramLineDecorator decorate(HologramLine wrappedLine,
-                                                        HologramClickAction clickAction) {
-    return new ClickableHologramLineDecorator(wrappedLine, clickAction);
+  public static ClickableHologramLine decorate(HologramLine wrappedLine,
+                                               HologramClickAction clickAction) {
+    return new ClickableHologramLine(wrappedLine, clickAction);
   }
 
   private final HologramClickAction clickAction;
@@ -41,19 +42,19 @@ public class ClickableHologramLineDecorator
    * @param clickAction The action to be performed when a player clicks this line.
    */
   @ConstructorProperties({"wrappedLine", "clickAction"})
-  public ClickableHologramLineDecorator(HologramLine wrappedLine,
-                                        HologramClickAction clickAction) {
+  public ClickableHologramLine(HologramLine wrappedLine,
+                               HologramClickAction clickAction) {
     super(wrappedLine);
     this.clickAction = clickAction;
     this.boundingBoxes = new HashMap<>();
   }
 
   /**
-   * Returns the map of bounding boxes per player. Each player may
-   * see the line differently, depending on the line's content.
+   * Returns the map of bounding boxes per language. Each player may
+   * see the line differently, depending on the language.
    * Therefore, a unique bounding box is associated with each player.
    *
-   * @return The map of bounding boxes (player to bounding box mapping).
+   * @return The map of bounding boxes (language to bounding box mapping).
    */
   public Map<String, BoundingBox> getBoundingBoxes() {
     return boundingBoxes;
@@ -61,11 +62,15 @@ public class ClickableHologramLineDecorator
 
   public void registerBoundingBox(Player player,
                                   BoundingBox boundingBox) {
-    boundingBoxes.put(player.getUniqueId().toString(), boundingBox);
+    boundingBoxes.computeIfAbsent(LanguageProvider.locale().getLanguage(player), k -> boundingBox);
   }
 
   public BoundingBox getBoundingBox(Player player) {
-    return boundingBoxes.get(player.getUniqueId().toString());
+    return boundingBoxes.get(LanguageProvider.locale().getLanguage(player));
+  }
+
+  public BoundingBox getBoundingBox(String language) {
+    return boundingBoxes.get(language);
   }
 
   /**

@@ -14,6 +14,7 @@
     <module>protocol/protocol-v1_8_R3</module>
     <module>core</module>
     <module>plugin</module>
+    <module>loader/loader-api</module>
   </modules>
 
   <properties>

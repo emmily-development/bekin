@@ -1,9 +1,9 @@
 package dev.emmily.bekin.plugin.module;
 
-import com.google.gson.GsonBuilder;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
+import dev.emmily.bekin.api.hologram.spatial.PrTreeRegistry;
 import dev.emmily.bekin.plugin.BekinPlugin;
 import dev.emmily.bekin.plugin.error.ErrorNotifier;
 import dev.emmily.bekin.plugin.message.PaginatedMessage;
@@ -55,6 +55,6 @@ public class InjectorModule
 
   @Provides
   public HologramHandler provideHologramHandler(MessageHandler messageHandler) {
-    return HologramHandler.getInstance(messageHandler);
+    return HologramHandler.getInstance(messageHandler, new PrTreeRegistry(new MapModelRepository<>()));
   }
 }

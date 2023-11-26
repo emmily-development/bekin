@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 public class HologramLineImpl
   implements HologramLine {
+  private String underlyingHologram;
   private transient int backingEntityId;
   private TextProvider content;
   private Vector3D position;
@@ -17,6 +18,16 @@ public class HologramLineImpl
   @ConstructorProperties("content")
   public HologramLineImpl(TextProvider content) {
     this.content = content;
+  }
+
+  @Override
+  public String getUnderlyingHologram() {
+    return underlyingHologram;
+  }
+
+  @Override
+  public void setUnderlyingHologram(String underlyingHologram) {
+    this.underlyingHologram = underlyingHologram;
   }
 
   @Override

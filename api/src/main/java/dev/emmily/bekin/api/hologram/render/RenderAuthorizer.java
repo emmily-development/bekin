@@ -17,4 +17,13 @@ import java.util.function.Predicate;
 })
 public interface RenderAuthorizer
   extends Predicate<Player> {
+  RenderAuthorizer EMPTY = new EmptyRenderAuthorizer();
+
+  static RenderAuthorizer ofPermission(String permission) {
+    return new PermissionRenderAuthorizer(permission);
+  }
+
+  static RenderAuthorizer empty() {
+    return EMPTY;
+  }
 }

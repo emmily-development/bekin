@@ -8,27 +8,39 @@
   },
   "lines": [
     {
-      "type": "simple",
+      "type": ["simple"],
       "textProvider": {
         "type": "fixed",
         "text": "&#a903fcWelcome to my server!"
       }
     },
     {
-      "type": "clickable",
+      "type": ["clickable"],
       "textProvider": {
         "type": "i18n",
         "path": "path.to.my.i18n.message"
       },
       "clickAction": {
-        "type": "scripted",
-        "path": "./welcomeClickHandler.js"
+        "type": "run-command",
+        "command": "bekin help"
       }
+    },
+    {
+      "type": ["clickable", "updatable"],
+      "textProvider": {
+        "type": "i18n",
+        "paths": ["path.to.my.message.1", "path.to.my.message.2"]
+      },
+      "clickAction": {
+        "type": "play-sound",
+        "sound": "ui.button.click"
+      },
+      "updatePeriod": 1
     }
   ],
   "renderAuthorizer": {
-    "type": "scripted",
-    "path": "./welcomeAuthorizer.js"
+    "type": "permission",
+    "node": "my.render.permission"
   },
   "renderDistance": 8
 }

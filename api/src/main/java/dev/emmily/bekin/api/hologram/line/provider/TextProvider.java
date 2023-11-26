@@ -18,4 +18,11 @@ import java.util.function.BiFunction;
 })
 public interface TextProvider
   extends BiFunction<Player, MessageHandler, String> {
+  static TextProvider staticText(String text) {
+    return new StaticTextProvider(text);
+  }
+
+  static TextProvider multiLanguage(String path) {
+    return new MultiLanguageTextProvider(path);
+  }
 }

@@ -2,27 +2,27 @@ package dev.emmily.bekin.api.hologram.line.decorator.update;
 
 import dev.emmily.bekin.api.event.line.HologramLineUpdateEvent;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.decorator.AbstractHologramLineDecorator;
+import dev.emmily.bekin.api.hologram.line.decorator.AbstractLineDecorator;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
 import java.util.Collection;
 
-public class UpdatableHologramLineDecorator
-  extends AbstractHologramLineDecorator
+public class UpdatableHologramLine
+  extends AbstractLineDecorator
   implements HologramLine {
-  public static UpdatableHologramLineDecorator decorate(HologramLine wrappedLine,
-                                                        long updatePeriod) {
-    return new UpdatableHologramLineDecorator(wrappedLine, updatePeriod);
+  public static UpdatableHologramLine decorate(HologramLine wrappedLine,
+                                               long updatePeriod) {
+    return new UpdatableHologramLine(wrappedLine, updatePeriod);
   }
 
   private final long updatePeriod;
   private long lastUpdate;
 
   @ConstructorProperties({"wrappedLine", "updatePeriod"})
-  public UpdatableHologramLineDecorator(HologramLine wrappedLine,
-                                        long updatePeriod) {
+  public UpdatableHologramLine(HologramLine wrappedLine,
+                               long updatePeriod) {
     super(wrappedLine);
     this.updatePeriod = updatePeriod;
   }

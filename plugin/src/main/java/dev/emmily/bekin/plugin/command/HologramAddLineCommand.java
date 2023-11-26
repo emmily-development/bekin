@@ -3,8 +3,8 @@ package dev.emmily.bekin.plugin.command;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
+import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.plugin.message.MessageMode;
-import dev.emmily.bekin.api.hologram.line.provider.TextProviders;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
@@ -34,7 +34,7 @@ public class HologramAddLineCommand
   public void runAddLineCommand(@Sender Player player,
                                 @Named("hologram") Hologram hologram,
                                 @Named("content") @Text String content) {
-    hologram.addLine(HologramLine.line(TextProviders.staticText(content)));
+    hologram.addLine(HologramLine.line(TextProvider.staticText(content)));
 
     hologramHandler.destroy(hologram);
     hologramHandler.spawn(hologram);
@@ -69,7 +69,7 @@ public class HologramAddLineCommand
       return;
     }
 
-    hologram.replaceLine(index, HologramLine.line(TextProviders.staticText(content)));
+    hologram.replaceLine(index, HologramLine.line(TextProvider.staticText(content)));
 
     hologramHandler.destroy(hologram);
     hologramHandler.spawn(hologram);

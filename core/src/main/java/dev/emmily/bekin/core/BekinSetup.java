@@ -9,6 +9,6 @@ public interface BekinSetup {
   static void injectListeners(Plugin plugin,
                               HologramRegistry registry) {
     PluginManager pluginManager = plugin.getServer().getPluginManager();
-    pluginManager.registerEvents(new HologramClickListener(registry), plugin);
+    pluginManager.registerEvents(new HologramClickListener(registry, prTreeRepository), plugin);
   }
 }

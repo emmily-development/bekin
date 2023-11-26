@@ -3,12 +3,12 @@ package dev.emmily.bekin.plugin.command;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
-import dev.emmily.bekin.api.hologram.render.RenderAuthorizers;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
 import dev.emmily.bekin.plugin.message.MessageMode;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.message.MessageHandler;
 import org.bukkit.Bukkit;
@@ -36,7 +36,8 @@ public class HologramCreateCommand
     names = "create"
   )
   public void runCreateCommand(@Sender Player player,
-                               @Named("id") String id) {
+                               @Named("id") String id,
+                               @Named("renderDistance") @OptArg("8") int renderDistance) {
     if (hologramRegistry.get(id) != null) {
       messageHandler.sendReplacingIn(
         player, MessageMode.ERROR,
@@ -47,13 +48,12 @@ public class HologramCreateCommand
       return;
     }
 
-    Hologram hologram = new Hologram(
-      id,
-      Vector3D.fromBukkit(player.getLocation()),
-      new ArrayList<>(),
-      RenderAuthorizers.empty(),
-      8
-    );
+    Hologram hologram = Hologram
+      .builder()
+      .id(id)
+      .position(Vector3D.fromBukkit(player.getLocation()))
+      .renderDistance(renderDistance)
+      .build();
 
     hologramRegistry.register(hologram);
     hologramHandler.spawn(hologram);
