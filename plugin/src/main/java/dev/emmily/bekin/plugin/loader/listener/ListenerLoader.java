@@ -30,7 +30,7 @@ public class ListenerLoader
       pluginManager.registerEvents(listener, plugin);
     }
 
-    plugin.getLogger().info("Successfully loaded" + listeners.size() + " listeners");
+    plugin.getLogger().info("Successfully loaded " + listeners.size() + " listeners");
   }
 
   @Override

@@ -53,13 +53,14 @@ public class Ray {
   }
 
   /**
-   * Checks if the ray intersects with the given bounding box.
+   * Calculates the distance at which the ray intersects with the given bounding box.
    *
    * @param box The bounding box to test for intersection.
-   * @return {@code true} if the ray intersects with the bounding
-   * box, {@code false} otherwise.
+   * @return The distance along the ray's direction vector to the point of intersection
+   *         with the bounding box. Returns {@link Double#POSITIVE_INFINITY} if there
+   *         is no intersection.
    */
-  public boolean intersectsBox(BoundingBox box) {
+  public double intersectionDistance(BoundingBox box) {
     Vector3D min = box.getMin();
     Vector3D max = box.getMax();
 
@@ -82,7 +83,7 @@ public class Ray {
     }
 
     if ((tMin > tYMax) || (tYMin > tMax)) {
-      return false;
+      return Double.POSITIVE_INFINITY;
     }
 
     if (tYMin > tMin) {
@@ -102,7 +103,12 @@ public class Ray {
       tZMax = temp;
     }
 
-    return (!(tMin > tZMax)) && (!(tZMin > tMax));
+    if ((tMin > tZMax) || (tZMin > tMax)) {
+      return Double.POSITIVE_INFINITY;
+    }
+
+    double t = Math.max(Math.max(tMin, tYMin), tZMin);
+    return t >= 0 ? t : Double.POSITIVE_INFINITY;
   }
 
   public void show(Player player) {

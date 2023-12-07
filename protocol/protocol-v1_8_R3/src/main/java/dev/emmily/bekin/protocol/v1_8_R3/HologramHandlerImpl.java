@@ -3,14 +3,9 @@ package dev.emmily.bekin.protocol.v1_8_R3;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
-import dev.emmily.bekin.api.hologram.spatial.PrTreeRegistry;
-import dev.emmily.bekin.api.spatial.tree.CopyOnWritePRTree;
-import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
+import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import dev.emmily.bekin.api.util.lang.LanguageProvider;
 import dev.emmily.bekin.protocol.v1_8_R3.protocol.MinecraftProtocol;
-import me.yushust.message.MessageHandler;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -19,18 +14,10 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.UUID;
 
+import static dev.emmily.bekin.api.hologram.handler.HologramHandler.unknownEntity;
+
 public class HologramHandlerImpl
   implements HologramHandler {
-  private final MessageHandler messageHandler;
-  private final PrTreeRegistry prTreeRegistry;
-
-  public HologramHandlerImpl(MessageHandler messageHandler,
-                             PrTreeRegistry prTreeRegistry) {
-    this.messageHandler = messageHandler;
-    this.prTreeRegistry = prTreeRegistry;
-  }
-
-
   @Override
   public void spawn(Hologram hologram) {
     WorldServer world = MinecraftProtocol.getWorld(hologram.getPosition().getWorld());
@@ -48,11 +35,7 @@ public class HologramHandlerImpl
       armorStand.setGravity(true);
       armorStand.setInvisible(true);
       armorStand.setCustomNameVisible(true);
-
-      if (!(line instanceof ClickableHologramLine)) {
-        // non-clickable lines don't require a hitbox
-        armorStand.n(true);
-      }
+      armorStand.n(true); // marker
 
       world.addEntity(armorStand);
       line.setBackingEntityId(armorStand.getId());
@@ -67,21 +50,23 @@ public class HologramHandlerImpl
     for (HologramLine line : hologram) {
       Entity entity = world.a(line.getBackingEntityId());
 
-      if (entity instanceof EntityArmorStand) {
-        for (String id : viewers) {
-          OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(id));
-
-          if (offlinePlayer.isOnline()) {
-            MinecraftProtocol.sendPackets(
-              offlinePlayer.getPlayer(),
-              new PacketPlayOutEntityDestroy(line.getBackingEntityId())
-            );
-          }
-        }
-
-        viewers.clear();
-        world.removeEntity(entity);
+      if (entity == null) {
+        throw unknownEntity(hologram, line);
       }
+
+      for (String id : viewers) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(id));
+
+        if (offlinePlayer.isOnline()) {
+          MinecraftProtocol.sendPackets(
+            offlinePlayer.getPlayer(),
+            new PacketPlayOutEntityDestroy(line.getBackingEntityId())
+          );
+        }
+      }
+
+      viewers.clear();
+      world.removeEntity(entity);
     }
   }
 
@@ -99,24 +84,21 @@ public class HologramHandlerImpl
       for (HologramLine line : hologram) {
         Entity entity = world.a(line.getBackingEntityId());
 
-        if (entity instanceof EntityArmorStand) {
-          EntityArmorStand armorStand = (EntityArmorStand) entity;
-          DataWatcher dataWatcher = armorStand.getDataWatcher();
-
-          String text = line.getContent().apply(player, messageHandler);
-          dataWatcher.watch(2, text);
-
-          MinecraftProtocol.sendPackets(
-            player,
-            new PacketPlayOutSpawnEntityLiving(armorStand),
-            new PacketPlayOutEntityMetadata(armorStand.getId(), dataWatcher, true)
-          );
-          viewers.add(player.getUniqueId().toString());
-
-          if (line instanceof ClickableHologramLine) {
-            assignBoundingBox(hologram, entity.getBoundingBox(), line, player);
-          }
+        if (entity == null) {
+          throw unknownEntity(hologram, line);
         }
+
+        EntityArmorStand armorStand = (EntityArmorStand) entity;
+        DataWatcher dataWatcher = armorStand.getDataWatcher();
+        dataWatcher.watch(2, line.getContent().apply(player));
+
+        MinecraftProtocol.sendPackets(
+          player,
+          new PacketPlayOutSpawnEntityLiving(armorStand),
+          new PacketPlayOutEntityMetadata(armorStand.getId(), dataWatcher, true)
+        );
+
+        viewers.add(player.getUniqueId().toString());
       }
     }
   }
@@ -130,10 +112,14 @@ public class HologramHandlerImpl
     for (HologramLine line : hologram) {
       Entity entity = world.a(line.getBackingEntityId());
 
-      if (entity instanceof EntityArmorStand) {
-        EntityArmorStand armorStand = (EntityArmorStand) entity;
-        MinecraftProtocol.sendPackets(player, new PacketPlayOutEntityDestroy(armorStand.getId()));
+      if (entity == null) {
+        throw unknownEntity(hologram, line);
       }
+
+      MinecraftProtocol.sendPackets(
+        player,
+        new PacketPlayOutEntityDestroy(entity.getId())
+      );
     }
 
     viewers.remove(player.getUniqueId().toString());
@@ -150,61 +136,12 @@ public class HologramHandlerImpl
       Entity entity = world.a(id);
 
       if (entity == null) {
-        throw new IllegalArgumentException(String.format(
-          "The armor stand of the line %s of the hologram %s couldn't be found. Did you use the kill command?",
-          hologram.getLines().indexOf(line),
-          hologram.getId()
-        ));
+        throw unknownEntity(hologram, line);
       }
 
       Vector3D position = hologram.nextPosition(line);
       entity.setPosition(position.getX(), position.getY(), position.getZ());
       line.setPosition(position);
     }
-
-    for (Player player : Bukkit.getOnlinePlayers()) {
-      if (!hologram.getRenderAuthorizer().test(player)) {
-        continue;
-      }
-
-      for (HologramLine line : hologram) {
-        if (!(line instanceof ClickableHologramLine)) {
-          continue;
-        }
-
-        int id = line.getBackingEntityId();
-        Entity entity = world.a(id);
-        assignBoundingBox(hologram, entity.getBoundingBox(), line, player);
-      }
-
-      hide(hologram, player);
-      render(hologram, player);
-    }
-  }
-
-  private void assignBoundingBox(Hologram hologram,
-                                 AxisAlignedBB entityBoundingBox,
-                                 HologramLine line,
-                                 Player player) {
-    ClickableHologramLine clickableLine = (ClickableHologramLine) line;
-    double highestX = entityBoundingBox.d;
-    double highestY = entityBoundingBox.e / 2;
-    double highestZ = entityBoundingBox.f;
-
-    Vector3D highestHitBoxPoint = new Vector3D(
-      hologram.getPosition().getWorld(),
-      highestX,
-      highestY,
-      highestZ
-    );
-
-    String text = line.getContent().apply(player, messageHandler);
-    BoundingBox textBoundingBox = BoundingBox.forEntityCustomName(highestHitBoxPoint, text);
-    clickableLine.registerBoundingBox(player, textBoundingBox);
-
-    String language = LanguageProvider.locale().getLanguage(player);
-    CopyOnWritePRTree<ClickableHologramLine> prTree = prTreeRegistry.getOrCreate(language);
-
-    prTree.add(clickableLine);
   }
 }

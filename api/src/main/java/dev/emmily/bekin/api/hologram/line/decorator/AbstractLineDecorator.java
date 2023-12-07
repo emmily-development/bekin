@@ -43,16 +43,6 @@ public abstract class AbstractLineDecorator
   }
 
   @Override
-  public boolean isSpawned() {
-    return wrappedLine.isSpawned();
-  }
-
-  @Override
-  public void setSpawned(boolean spawned) {
-    wrappedLine.setSpawned(spawned);
-  }
-
-  @Override
   public String getUnderlyingHologram() {
     return wrappedLine.getUnderlyingHologram();
   }
@@ -60,5 +50,9 @@ public abstract class AbstractLineDecorator
   @Override
   public void setUnderlyingHologram(String underlyingHologram) {
     wrappedLine.setUnderlyingHologram(underlyingHologram);
+  }
+
+  public HologramLine getWrappedLine() {
+    return wrappedLine;
   }
 }

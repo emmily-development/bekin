@@ -1,9 +1,11 @@
 package dev.emmily.bekin.api.spatial.vectorial;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import java.beans.ConstructorProperties;
+import java.util.Objects;
 
 /**
  * Represents a three-dimensional vector with
@@ -22,7 +24,7 @@ public class Vector3D {
 
   public static Vector3D fromBukkit(String world,
                                     Vector bukkit) {
-    return new Vector3D(
+    return of(
       world,
       bukkit.getX(),
       bukkit.getY(),
@@ -31,7 +33,7 @@ public class Vector3D {
   }
 
   public static Vector3D fromBukkit(Location location) {
-    return new Vector3D(
+    return of(
       location.getWorld().getName(),
       location.getX(),
       location.getY(),
@@ -108,7 +110,7 @@ public class Vector3D {
    * @return The magnitude of the vector.
    */
   public double magnitude() {
-    return (double) Math.sqrt(x * x + y * y + z * z);
+    return Math.sqrt(x * x + y * y + z * z);
   }
 
   /**
@@ -134,7 +136,7 @@ public class Vector3D {
     double resultY = z * other.getX() - x * other.getZ();
     double resultZ = x * other.getY() - y * other.getX();
 
-    return new Vector3D(world, resultX, resultY, resultZ);
+    return of(world, resultX, resultY, resultZ);
   }
 
   /**
@@ -149,7 +151,7 @@ public class Vector3D {
     double resultY = y + other.getY();
     double resultZ = z + other.getZ();
 
-    return new Vector3D(world, resultX, resultY, resultZ);
+    return of(world, resultX, resultY, resultZ);
   }
 
   /**
@@ -164,7 +166,7 @@ public class Vector3D {
     double resultY = y - other.getY();
     double resultZ = z - other.getZ();
 
-    return new Vector3D(world, resultX, resultY, resultZ);
+    return of(world, resultX, resultY, resultZ);
   }
 
   /**
@@ -183,10 +185,10 @@ public class Vector3D {
       double resultY = y * inverseMagnitude;
       double resultZ = z * inverseMagnitude;
 
-      return new Vector3D(world, resultX, resultY, resultZ);
+      return of(world, resultX, resultY, resultZ);
     } else {
       // Handle division by zero (undefined normalization)
-      return new Vector3D(world, x, y, z);
+      return of(world, x, y, z);
     }
   }
 
@@ -197,7 +199,7 @@ public class Vector3D {
    *
    * @param beta The vector to which the squared distance is calculated.
    * @return The squared Euclidean distance between this vector and the given {@code beta} vector.
-   *         It represents the square of the Euclidean distance in a three-dimensional space.
+   * It represents the square of the Euclidean distance in a three-dimensional space.
    */
   public double distanceSquared(Vector3D beta) {
     double deltaX = beta.getX() - getX();
@@ -207,8 +209,27 @@ public class Vector3D {
     return Math.pow(deltaX, 2) + Math.pow(deltaY, 2) + Math.pow(deltaZ, 2);
   }
 
+  /**
+   * Multiplies each component of the vector by a scalar value
+   * and returns the resulting vector.
+   *
+   * @param scalar The scalar value to multiply by.
+   * @return A new vector resulting from the multiplication operation.
+   */
+  public Vector3D multiply(double scalar) {
+    double resultX = x * scalar;
+    double resultY = y * scalar;
+    double resultZ = z * scalar;
+
+    return of(world, resultX, resultY, resultZ);
+  }
+
   public Vector toBukkit() {
     return new Vector(x, y, z);
+  }
+
+  public Location toLocation() {
+    return new Location(Bukkit.getWorld(world), x, y, z);
   }
 
   @Override
@@ -219,5 +240,21 @@ public class Vector3D {
       ", y=" + y +
       ", z=" + z +
       '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Vector3D)) return false;
+    Vector3D vector3D = (Vector3D) o;
+    return Double.compare(x, vector3D.x) == 0
+      && Double.compare(y, vector3D.y) == 0
+      && Double.compare(z, vector3D.z) == 0
+      && Objects.equals(world, vector3D.world);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(world, x, y, z);
   }
 }

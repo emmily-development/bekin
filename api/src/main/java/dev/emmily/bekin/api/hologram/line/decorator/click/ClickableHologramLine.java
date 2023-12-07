@@ -4,12 +4,14 @@ import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.decorator.AbstractLineDecorator;
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.HologramClickAction;
 import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
+import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
 import dev.emmily.bekin.api.util.lang.LanguageProvider;
 import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a hologram line with a click feature.
@@ -33,7 +35,6 @@ public class ClickableHologramLine
   }
 
   private final HologramClickAction clickAction;
-  private final Map<String, BoundingBox> boundingBoxes;
 
   /**
    * Decorates the given {@code wrappedLine} with the click feature.
@@ -46,31 +47,6 @@ public class ClickableHologramLine
                                HologramClickAction clickAction) {
     super(wrappedLine);
     this.clickAction = clickAction;
-    this.boundingBoxes = new HashMap<>();
-  }
-
-  /**
-   * Returns the map of bounding boxes per language. Each player may
-   * see the line differently, depending on the language.
-   * Therefore, a unique bounding box is associated with each player.
-   *
-   * @return The map of bounding boxes (language to bounding box mapping).
-   */
-  public Map<String, BoundingBox> getBoundingBoxes() {
-    return boundingBoxes;
-  }
-
-  public void registerBoundingBox(Player player,
-                                  BoundingBox boundingBox) {
-    boundingBoxes.computeIfAbsent(LanguageProvider.locale().getLanguage(player), k -> boundingBox);
-  }
-
-  public BoundingBox getBoundingBox(Player player) {
-    return boundingBoxes.get(LanguageProvider.locale().getLanguage(player));
-  }
-
-  public BoundingBox getBoundingBox(String language) {
-    return boundingBoxes.get(language);
   }
 
   /**
@@ -81,5 +57,18 @@ public class ClickableHologramLine
    */
   public void onClick(Player player) {
     clickAction.accept(player);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ClickableHologramLine)) return false;
+    ClickableHologramLine that = (ClickableHologramLine) o;
+    return Objects.equals(clickAction, that.clickAction);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(clickAction);
   }
 }

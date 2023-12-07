@@ -32,7 +32,7 @@ public class HologramMoveCommand
   public void runMoveCommand(@Sender Player player,
                              @Named("hologram") Hologram hologram) {
     Location bukkit = player.getLocation();
-    Vector3D newPosition = Vector3D.fromBukkit(bukkit.getWorld().getName(), bukkit.toVector());
+    Vector3D newPosition = Vector3D.fromBukkit(bukkit);
 
     hologramHandler.move(hologram, newPosition);
 

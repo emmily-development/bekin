@@ -2,10 +2,9 @@ package dev.emmily.bekin.api.hologram.line;
 
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
-import java.util.function.Function;
+import java.util.Objects;
 
 public class HologramLineImpl
   implements HologramLine {
@@ -13,7 +12,6 @@ public class HologramLineImpl
   private transient int backingEntityId;
   private TextProvider content;
   private Vector3D position;
-  private boolean spawned;
 
   @ConstructorProperties("content")
   public HologramLineImpl(TextProvider content) {
@@ -61,12 +59,21 @@ public class HologramLineImpl
   }
 
   @Override
-  public boolean isSpawned() {
-    return spawned;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof HologramLineImpl)) return false;
+    HologramLineImpl that = (HologramLineImpl) o;
+    return backingEntityId == that.backingEntityId
+      && Objects.equals(underlyingHologram, that.underlyingHologram)
+      && Objects.equals(position, that.position);
   }
 
   @Override
-  public void setSpawned(boolean spawned) {
-    this.spawned = spawned;
+  public int hashCode() {
+    return Objects.hash(
+      underlyingHologram,
+      backingEntityId,
+      content, position
+    );
   }
 }

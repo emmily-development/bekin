@@ -2,6 +2,8 @@ package dev.emmily.bekin.plugin.command;
 
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
+import dev.emmily.bekin.api.hologram.line.HologramLine;
+import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
 import dev.emmily.bekin.plugin.message.MessageMode;
@@ -15,7 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 
 public class HologramCreateCommand
   implements CommandClass {
@@ -53,6 +54,7 @@ public class HologramCreateCommand
       .id(id)
       .position(Vector3D.fromBukkit(player.getLocation()))
       .renderDistance(renderDistance)
+      .addLine(HologramLine.line(TextProvider.staticText("Bekin")))
       .build();
 
     hologramRegistry.register(hologram);

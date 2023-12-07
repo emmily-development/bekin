@@ -34,9 +34,10 @@ public class HologramAddLineCommand
   public void runAddLineCommand(@Sender Player player,
                                 @Named("hologram") Hologram hologram,
                                 @Named("content") @Text String content) {
+    hologramHandler.destroy(hologram);
+
     hologram.addLine(HologramLine.line(TextProvider.staticText(content)));
 
-    hologramHandler.destroy(hologram);
     hologramHandler.spawn(hologram);
 
     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -69,9 +70,10 @@ public class HologramAddLineCommand
       return;
     }
 
+    hologramHandler.destroy(hologram);
+
     hologram.replaceLine(index, HologramLine.line(TextProvider.staticText(content)));
 
-    hologramHandler.destroy(hologram);
     hologramHandler.spawn(hologram);
 
     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

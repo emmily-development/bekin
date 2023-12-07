@@ -7,10 +7,7 @@ import dev.emmily.sigma.api.Model;
 import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -107,15 +104,20 @@ public class Hologram
     return viewers.contains(player.getUniqueId().toString());
   }
 
-  public Vector3D nextPosition(HologramLine line) {
-    double y = lines.indexOf(line) * HologramLine.CUSTOM_NAME_VERTICAL_OFFSET;
+  public Vector3D nextPosition(HologramLine line,
+                               float offset) {
+    double y = lines.indexOf(line) * offset;
 
-    return new Vector3D(
+    return Vector3D.of(
       position.getWorld(),
       position.getX(),
       position.getY() - y,
       position.getZ()
     );
+  }
+
+  public Vector3D nextPosition(HologramLine line) {
+    return nextPosition(line, HologramLine.CUSTOM_NAME_VERTICAL_OFFSET);
   }
 
   public void addLine(HologramLine line) {
@@ -144,6 +146,27 @@ public class Hologram
     }
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Hologram)) return false;
+    Hologram hologram = (Hologram) o;
+    return renderDistance == hologram.renderDistance
+      && Objects.equals(id, hologram.id)
+      && Objects.equals(position, hologram.position)
+      && Objects.equals(lines, hologram.lines)
+      && Objects.equals(viewers, hologram.viewers);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      id, position, lines,
+      renderAuthorizer,
+      renderDistance, viewers
+    );
+  }
+
   public static class Builder {
     private String id;
     private Vector3D position;
@@ -154,7 +177,7 @@ public class Hologram
     public Vector3D nextPosition() {
       double y = lines.size() * HologramLine.CUSTOM_NAME_VERTICAL_OFFSET;
 
-      return new Vector3D(
+      return Vector3D.of(
         position.getWorld(),
         position.getX(),
         position.getY() - y,

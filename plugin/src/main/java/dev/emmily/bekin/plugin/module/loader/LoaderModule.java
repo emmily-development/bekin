@@ -6,6 +6,7 @@ import dev.emmily.bekin.plugin.loader.hologram.HologramLoader;
 import dev.emmily.bekin.plugin.loader.listener.ListenerLoader;
 import dev.emmily.bekin.plugin.loader.message.PaginatedMessageLoader;
 import dev.emmily.bekin.plugin.loader.service.BukkitServiceLoader;
+import dev.emmily.bekin.plugin.loader.task.TaskLoader;
 import me.yushust.inject.AbstractModule;
 
 public class LoaderModule
@@ -18,6 +19,7 @@ public class LoaderModule
       .to(CommandLoader.class)
       .to(ListenerLoader.class)
       .to(PaginatedMessageLoader.class)
-      .to(BukkitServiceLoader.class);
+      .to(BukkitServiceLoader.class)
+      .to(TaskLoader.class);
   }
 }

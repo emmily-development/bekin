@@ -1,23 +1,26 @@
 package dev.emmily.bekin.core.listener;
 
+import dev.emmily.bekin.api.hologram.Hologram;
+import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
+import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
 import dev.emmily.bekin.api.spatial.raytracing.Ray;
-import dev.emmily.bekin.api.spatial.tree.CopyOnWritePRTree;
+import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import dev.emmily.bekin.api.util.lang.LanguageProvider;
-import dev.emmily.sigma.api.repository.ModelRepository;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class HologramClickListener
-  implements Listener {
-  private final ModelRepository<CopyOnWritePRTree<ClickableHologramLine>> prTreeRepository;
+import java.util.Comparator;
+import java.util.List;
 
-  public HologramClickListener(ModelRepository<CopyOnWritePRTree<ClickableHologramLine>> prTreeRepository) {
-    this.prTreeRepository = prTreeRepository;
+public class HologramClickListener implements Listener {
+  private final HologramRegistry hologramRegistry;
+
+  public HologramClickListener(HologramRegistry hologramRegistry) {
+    this.hologramRegistry = hologramRegistry;
   }
 
   @EventHandler
@@ -26,6 +29,14 @@ public class HologramClickListener
     String world = player.getWorld().getName();
 
     Location eyeLocation = player.getEyeLocation();
+    Vector3D origin = Vector3D.fromBukkit(eyeLocation);
+
+    List<Hologram> nearbyHolograms = hologramRegistry.getNearbyHolograms(origin, 5);
+
+    if (nearbyHolograms.isEmpty()) {
+      return;
+    }
+
     double yaw = Math.toRadians(eyeLocation.getYaw());
     double pitch = Math.toRadians(eyeLocation.getPitch());
 
@@ -36,26 +47,35 @@ public class HologramClickListener
       Math.cos(yaw) * Math.cos(pitch)
     );
 
-    // Trace a ray from the player's eye location to its crosshair direction
-    Ray ray = Ray.trace(Vector3D.fromBukkit(world, eyeLocation.toVector()), direction);
-    ray.show(player);
+    Ray ray = Ray.trace(origin, direction);
 
-    String language = LanguageProvider.locale().getLanguage(player);
-    CopyOnWritePRTree<ClickableHologramLine> prTree = prTreeRepository.find(language);
+    ClickableHologramLine closestLine = null;
+    double closestDistance = Double.POSITIVE_INFINITY;
 
-    if (prTree == null) {
-      return;
+    for (Hologram hologram : nearbyHolograms) {
+      for (HologramLine line : hologram.getLines()) {
+        if (!(line instanceof ClickableHologramLine)) {
+          continue;
+        }
+
+        ClickableHologramLine clickableLine = (ClickableHologramLine) line;
+
+        BoundingBox boundingBox = BoundingBox.fromName(
+          clickableLine.getPosition(),
+          clickableLine.getContent().apply(player)
+        );
+
+        double distance = ray.intersectionDistance(boundingBox);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestLine = clickableLine;
+        }
+      }
     }
 
-    Vector3D playerPosition = Vector3D.fromBukkit(world, player.getLocation().toVector());
-
-    for (ClickableHologramLine line : prTree.find(direction)) {
-      Vector3D linePosition = line.getPosition();
-      double distance = playerPosition.distanceSquared(linePosition);
-
-      if (distance <= 5) {
-        line.onClick(player);
-      }
+    if (closestLine != null) {
+      closestLine.onClick(player);
     }
   }
 }

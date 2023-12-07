@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
 import java.util.Collection;
+import java.util.Objects;
 
 public class UpdatableHologramLine
   extends AbstractLineDecorator
@@ -31,17 +32,24 @@ public class UpdatableHologramLine
     return System.currentTimeMillis() - lastUpdate >= updatePeriod;
   }
 
-  public void update(Collection<Player> players) {
+  public void update() {
     if (!canUpdate()) {
       return;
     }
 
-    for (Player player : players) {
-      Bukkit.getPluginManager().callEvent(new HologramLineUpdateEvent(
-        this, player
-      ));
-    }
-
     lastUpdate = System.currentTimeMillis();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UpdatableHologramLine)) return false;
+    UpdatableHologramLine that = (UpdatableHologramLine) o;
+    return updatePeriod == that.updatePeriod && lastUpdate == that.lastUpdate;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(updatePeriod, lastUpdate);
   }
 }

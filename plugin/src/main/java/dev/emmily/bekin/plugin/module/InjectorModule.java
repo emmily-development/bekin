@@ -3,7 +3,6 @@ package dev.emmily.bekin.plugin.module;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
-import dev.emmily.bekin.api.hologram.spatial.PrTreeRegistry;
 import dev.emmily.bekin.plugin.BekinPlugin;
 import dev.emmily.bekin.plugin.error.ErrorNotifier;
 import dev.emmily.bekin.plugin.message.PaginatedMessage;
@@ -16,9 +15,7 @@ import dev.emmily.sigma.platform.codec.jackson.JacksonModelCodec;
 import dev.emmily.sigma.platform.jdk.MapModelRepository;
 import dev.emmily.sigma.platform.json.JsonModelRepository;
 import me.yushust.inject.AbstractModule;
-import me.yushust.inject.Provides;
 import me.yushust.inject.key.TypeReference;
-import me.yushust.message.MessageHandler;
 
 import java.io.File;
 
@@ -40,21 +37,23 @@ public class InjectorModule
       new File(plugin.getDataFolder(), "holograms"),
       Hologram.class
     );
-    bind(HologramRegistry.class).toInstance(new HologramRegistry(hologramRepository));
+    HologramRegistry hologramRegistry = new HologramRegistry(hologramRepository);
+    bind(HologramRegistry.class).toInstance(hologramRegistry);
 
     bind(ErrorNotifier.class).singleton();
 
     bind(TypeReference.of(ModelRepository.class, PaginatedMessage.class)).toInstance(new MapModelRepository<>());
 
+    bind(HologramHandler.class)
+      .toInstance(HologramHandler.getInstance(HologramHandler.Namespace.ARMOR_STAND));
+    bind(HologramHandler.class)
+      .named("text-display")
+      .toInstance(HologramHandler.getInstance(HologramHandler.Namespace.TEXT_DISPLAY));
+
     install(
       new MessageModule(plugin),
-      new ListenerModule(),
+      new ListenerModule(hologramRegistry),
       new LoaderModule()
     );
-  }
-
-  @Provides
-  public HologramHandler provideHologramHandler(MessageHandler messageHandler) {
-    return HologramHandler.getInstance(messageHandler, new PrTreeRegistry(new MapModelRepository<>()));
   }
 }

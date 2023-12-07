@@ -31,7 +31,7 @@ public class HologramRemoveLineCommand
   public void runRemoveLineCommand(@Sender Player player,
                                    @Named("hologram") Hologram hologram,
                                    @Named("index") int index) {
-    if (hologram.getLines().get(index) == null) {
+    if (hologram.getLines().size() < index || hologram.getLines().get(index) == null) {
       messageHandler.sendReplacingIn(
         player, MessageMode.ERROR,
         "hologram.line-not-found",

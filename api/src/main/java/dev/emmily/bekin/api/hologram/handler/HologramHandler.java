@@ -1,22 +1,26 @@
 package dev.emmily.bekin.api.hologram.handler;
 
 import dev.emmily.bekin.api.hologram.Hologram;
-import dev.emmily.bekin.api.hologram.spatial.PrTreeRegistry;
+import dev.emmily.bekin.api.hologram.line.HologramLine;
+import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import me.yushust.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static dev.emmily.bekin.api.util.protocol.ProtocolConstants.SEMANTIC_SERVER_VERSION;
+import static dev.emmily.bekin.api.util.protocol.ProtocolConstants.SERVER_VERSION;
 
 /**
  * Defines the methods for rendering and managing holograms for
  * specific players.
  */
 public interface HologramHandler {
-  static HologramHandler getInstance(MessageHandler messageHandler,
-                                     PrTreeRegistry prTreeRegistry) {
-    return Holder.getInstance(messageHandler, prTreeRegistry);
+  static HologramHandler getInstance(Namespace namespace) {
+    return Holder.getInstance(namespace);
   }
 
   /**
@@ -41,7 +45,11 @@ public interface HologramHandler {
    */
   void render(Hologram hologram, Player player);
 
-  void renderForEveryone(Hologram hologram);
+  default void renderForEveryone(Hologram hologram) {
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      render(hologram, player);
+    }
+  }
 
   /**
    * Hides a hologram for a specific player.
@@ -52,10 +60,14 @@ public interface HologramHandler {
   void hide(Hologram hologram,
             Player player);
 
-  void hideFromEveryone(Hologram hologram);
+  default void hideFromEveryone(Hologram hologram) {
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      hide(hologram, player);
+    }
+  }
 
   /**
-   * Moves the hologram to a given location.
+   * Moves the hologram to a given position.
    *
    * @param hologram    The hologram to be moved.
    * @param newPosition The position to move the hologram to.
@@ -63,38 +75,62 @@ public interface HologramHandler {
   void move(Hologram hologram,
             Vector3D newPosition);
 
-  class Holder {
-    private static volatile HologramHandler instance;
-    private static final Object LOCK = new Object();
-    private static final String PROTOCOL_CLASS_PATTERN = "dev.emmily.bekin.protocol.%s";
-    private static final String SERVER_VERSION = Bukkit
-      .getServer()
-      .getClass()
-      .getName()
-      .split("\\.")[3];
+  static IllegalArgumentException unknownEntity(Hologram hologram,
+                                                HologramLine line) {
+    return new IllegalArgumentException(String.format(
+      "The armor stand of the line %s of the hologram %s couldn't be found. Did you use the kill command?",
+      hologram.getLines().indexOf(line),
+      hologram.getId()
+    ));
+  }
 
-    static HologramHandler getInstance(MessageHandler messageHandler,
-                                       PrTreeRegistry prTreeRegistry) {
-      if (instance != null) {
-        return instance;
+  enum Namespace {
+    ARMOR_STAND,
+    TEXT_DISPLAY
+  }
+
+  class Holder {
+    private static volatile Map<Namespace, HologramHandler> instances = new HashMap<>();
+    private static final Object LOCK = new Object();
+    private static final String PROTOCOL_CLASS_PATTERN = "dev.emmily.bekin.protocol.%s.%s";
+
+    static HologramHandler getInstance(Namespace namespace) {
+      if (instances.containsKey(namespace)) {
+        return instances.get(namespace);
       }
 
       synchronized (LOCK) {
-        if (instance == null) {
+        if (instances.get(namespace) == null) {
           try {
-            instance = (HologramHandler) Class
-              .forName(String.format(PROTOCOL_CLASS_PATTERN, SERVER_VERSION + ".HologramHandlerImpl"))
-              .getConstructor(MessageHandler.class, PrTreeRegistry.class)
-              .newInstance(messageHandler, prTreeRegistry);
+            String className = null;
+
+            if (SEMANTIC_SERVER_VERSION.getMinor() < 19) {
+              className = "HologramHandlerImpl";
+            } else {
+              if (namespace == Namespace.ARMOR_STAND) {
+                className = "ArmorStandHologramHandler";
+              } else if (namespace == Namespace.TEXT_DISPLAY) {
+                className = "TextDisplayHologramHandler";
+              }
+            }
+
+            HologramHandler hologramHandler = (HologramHandler) Class
+              .forName(String.format(PROTOCOL_CLASS_PATTERN, SERVER_VERSION, className))
+              .getConstructor()
+              .newInstance();
+            instances.put(namespace, hologramHandler);
           } catch (ClassNotFoundException | NoSuchMethodException e) {
-            throw new RuntimeException(String.format("your server version (%s) is not supported by bekin", SERVER_VERSION));
+            throw new RuntimeException(String.format(
+              "your server version (%s) is not supported by bekin",
+              SERVER_VERSION
+            ));
           } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
           }
         }
       }
 
-      return instance;
+      return instances.get(namespace);
     }
   }
 }

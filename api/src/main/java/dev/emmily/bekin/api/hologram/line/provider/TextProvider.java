@@ -2,27 +2,23 @@ package dev.emmily.bekin.api.hologram.line.provider;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import dev.emmily.bekin.api.hologram.line.provider.fixed.StaticTextProvider;
-import dev.emmily.bekin.api.hologram.line.provider.i18n.MultiLanguageTextProvider;
-import me.yushust.message.MessageHandler;
+import dev.emmily.bekin.api.hologram.line.provider.fixed.FixedTextProvider;
 import org.bukkit.entity.Player;
-
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @JsonTypeInfo(
   use = JsonTypeInfo.Id.NAME
 )
 @JsonSubTypes({
-  @JsonSubTypes.Type(StaticTextProvider.class),
-  @JsonSubTypes.Type(MultiLanguageTextProvider.class)
+  @JsonSubTypes.Type(FixedTextProvider.class),
 })
 public interface TextProvider
-  extends BiFunction<Player, MessageHandler, String> {
-  static TextProvider staticText(String text) {
-    return new StaticTextProvider(text);
+  extends Function<Player, String> {
+  static String truncate(String text) {
+    return text.length() > 256 ? text.substring(0, 256) : text;
   }
 
-  static TextProvider multiLanguage(String path) {
-    return new MultiLanguageTextProvider(path);
+  static TextProvider staticText(String text) {
+    return new FixedTextProvider(text);
   }
 }
