@@ -29,6 +29,7 @@ public class HologramLineUpdater implements Runnable {
       List<HologramLine> lines = hologram.getLines();
 
       for (HologramLine line : lines) {
+        // TODO: find another way to compare the hierarchy
         if (line instanceof UpdatableHologramLine) {
           UpdatableHologramLine updatableLine = (UpdatableHologramLine) line;
 

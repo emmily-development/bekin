@@ -9,13 +9,13 @@ player stats, messages, or any other information in the form of floating text, t
 
 ## Features
 
-- Support for Spigot versions 1.8.8 to 1.20.2.
+- Support for Spigot versions 1.8.8 to 1.20.4.
 - Easy-to-use API for creating and managing holograms.
 - Create holographic displays with text, item frames, and other entities.
 - Update holograms dynamically to reflect changing information.
 - Customize hologram appearance, position, and interactions.
 - High-performance and efficient hologram rendering.
-- ~~Ray tracing-based interactions for the highest precision in player interactions.~~
+- Ray tracing-based interactions for the highest precision in player interactions.
 - PR-Tree-based indexing for clickable lines, ensuring the highest precision in player interactions.
 
 ## TO-DO
