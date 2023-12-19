@@ -1,24 +1,20 @@
 package dev.emmily.bekin.api.spatial.raytracing;
 
 import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+import org.joml.Vector3d;
 
 /**
  * Represents a three-dimensional ray defined by an origin
  * point and a normalized direction vector.
  */
 public class Ray {
-  public static Ray trace(Vector3D origin,
-                          Vector3D direction) {
+  public static Ray trace(Vector3d origin,
+                          Vector3d direction) {
     return new Ray(origin, direction);
   }
 
-  private final Vector3D origin;      // The origin point of the ray.
-  private final Vector3D direction;   // The normalized direction vector of the ray.
+  private final Vector3d origin;      // The origin point of the ray.
+  private final Vector3d direction;   // The normalized direction vector of the ray.
 
   /**
    * Constructs a new Ray with the specified origin and direction.
@@ -27,8 +23,8 @@ public class Ray {
    * @param direction A normalized direction vector indicating
    *                  the ray's direction.
    */
-  public Ray(Vector3D origin,
-             Vector3D direction) {
+  public Ray(Vector3d origin,
+             Vector3d direction) {
     this.origin = origin;
     this.direction = direction.normalize();  // The direction vector is normalized.
   }
@@ -38,7 +34,7 @@ public class Ray {
    *
    * @return The origin point from which the ray starts.
    */
-  public Vector3D getOrigin() {
+  public Vector3d getOrigin() {
     return origin;
   }
 
@@ -48,24 +44,23 @@ public class Ray {
    * @return The direction vector indicating the ray's direction
    * (normalized to have a length of 1).
    */
-  public Vector3D getDirection() {
+  public Vector3d getDirection() {
     return direction;
   }
 
   /**
-   * Calculates the distance at which the ray intersects with the given bounding box.
+   * Checks if the ray intersects with the given bounding box.
    *
    * @param box The bounding box to test for intersection.
-   * @return The distance along the ray's direction vector to the point of intersection
-   *         with the bounding box. Returns {@link Double#POSITIVE_INFINITY} if there
-   *         is no intersection.
+   * @return {@code true} if the ray intersects with the bounding
+   * box, {@code false} otherwise.
    */
-  public double intersectionDistance(BoundingBox box) {
-    Vector3D min = box.getMin();
-    Vector3D max = box.getMax();
+  public boolean intersectsBox(BoundingBox box) {
+    Vector3d min = box.getMin();
+    Vector3d max = box.getMax();
 
-    double tMin = (min.getX() - origin.getX()) / direction.getX();
-    double tMax = (max.getX() - origin.getX()) / direction.getX();
+    double tMin = (min.x() - origin.x) / direction.x;
+    double tMax = (max.x() - origin.x) / direction.x;
 
     if (tMin > tMax) {
       double temp = tMin;
@@ -73,8 +68,8 @@ public class Ray {
       tMax = temp;
     }
 
-    double tYMin = (min.getY() - origin.getY()) / direction.getY();
-    double tYMax = (max.getY() - origin.getY()) / direction.getY();
+    double tYMin = (min.y() - origin.y) / direction.y;
+    double tYMax = (max.y() - origin.y) / direction.y;
 
     if (tYMin > tYMax) {
       double temp = tYMin;
@@ -83,7 +78,7 @@ public class Ray {
     }
 
     if ((tMin > tYMax) || (tYMin > tMax)) {
-      return Double.POSITIVE_INFINITY;
+      return false;
     }
 
     if (tYMin > tMin) {
@@ -94,8 +89,8 @@ public class Ray {
       tMax = tYMax;
     }
 
-    double tZMin = (min.getZ() - origin.getZ()) / direction.getZ();
-    double tZMax = (max.getZ() - origin.getZ()) / direction.getZ();
+    double tZMin = (min.z - origin.z) / direction.z;
+    double tZMax = (max.z - origin.z) / direction.z;
 
     if (tZMin > tZMax) {
       double temp = tZMin;
@@ -103,20 +98,6 @@ public class Ray {
       tZMax = temp;
     }
 
-    if ((tMin > tZMax) || (tZMin > tMax)) {
-      return Double.POSITIVE_INFINITY;
-    }
-
-    double t = Math.max(Math.max(tMin, tYMin), tZMin);
-    return t >= 0 ? t : Double.POSITIVE_INFINITY;
-  }
-
-  public void show(Player player) {
-    Location playerLocation = player.getLocation();
-    Vector bukkitVector = direction.toBukkit();
-
-    Arrow arrow = player.getWorld().spawnArrow(playerLocation, bukkitVector, 1.0f, 1.0f);
-    arrow.setVelocity(bukkitVector);
-    arrow.setShooter(player);
+    return (!(tMin > tZMax)) && (!(tZMin > tMax));
   }
 }

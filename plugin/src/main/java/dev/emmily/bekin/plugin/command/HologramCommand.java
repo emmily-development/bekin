@@ -2,14 +2,13 @@ package dev.emmily.bekin.plugin.command;
 
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
-import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.HologramClickAction;
 import dev.emmily.bekin.api.hologram.line.decorator.update.UpdatableHologramLine;
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
 import dev.emmily.bekin.api.hologram.render.RenderAuthorizer;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.bekin.api.util.lang.LanguageProvider;
 import dev.emmily.bekin.plugin.message.PaginatedMessage;
 import dev.emmily.sigma.api.repository.ModelRepository;
@@ -113,7 +112,7 @@ public class HologramCommand
     Hologram hologram = Hologram
       .builder()
       .id(UUID.randomUUID().toString())
-      .position(Vector3D.fromBukkit(sender.getLocation()))
+      .position(Position.fromBukkit(sender.getLocation()))
       .renderAuthorizer(RenderAuthorizer.ofPermission("sexo"))
       .renderDistance(8)
       .addLines(

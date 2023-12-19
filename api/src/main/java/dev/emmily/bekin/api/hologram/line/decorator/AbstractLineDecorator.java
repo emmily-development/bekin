@@ -2,7 +2,7 @@ package dev.emmily.bekin.api.hologram.line.decorator;
 
 import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 
 public abstract class AbstractLineDecorator
   implements HologramLine {
@@ -23,12 +23,12 @@ public abstract class AbstractLineDecorator
   }
 
   @Override
-  public Vector3D getPosition() {
+  public Position getPosition() {
     return wrappedLine.getPosition();
   }
 
   @Override
-  public void setPosition(Vector3D position) {
+  public void setPosition(Position position) {
     wrappedLine.setPosition(position);
   }
 

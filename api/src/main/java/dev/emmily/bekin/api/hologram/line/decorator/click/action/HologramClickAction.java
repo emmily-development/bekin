@@ -7,7 +7,7 @@ import dev.emmily.bekin.api.hologram.line.decorator.click.action.item.ItemClickA
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.message.SendMessageClickAction;
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.sound.PlaySoundClickAction;
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.teleport.TeleportClickAction;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,7 +39,7 @@ public interface HologramClickAction
     return new PlaySoundClickAction(sound, volume, pitch);
   }
 
-  static HologramClickAction teleport(Vector3D to) {
+  static HologramClickAction teleport(Position to) {
     return new TeleportClickAction(to);
   }
 }

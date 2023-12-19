@@ -2,7 +2,7 @@ package dev.emmily.bekin.api.hologram;
 
 import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.render.RenderAuthorizer;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.sigma.api.Model;
 import org.bukkit.entity.Player;
 
@@ -24,7 +24,7 @@ public class Hologram
   }
 
   private final String id;
-  private Vector3D position;
+  private Position position;
   private final List<HologramLine> lines;
   private RenderAuthorizer renderAuthorizer;
   private int renderDistance;
@@ -36,7 +36,7 @@ public class Hologram
     "renderDistance"
   })
   public Hologram(String id,
-                  Vector3D position,
+                  Position position,
                   List<HologramLine> lines,
                   RenderAuthorizer renderAuthorizer,
                   int renderDistance) {
@@ -55,11 +55,11 @@ public class Hologram
     return id;
   }
 
-  public Vector3D getPosition() {
+  public Position getPosition() {
     return position;
   }
 
-  public void setPosition(Vector3D position) {
+  public void setPosition(Position position) {
     this.position = position;
   }
 
@@ -104,11 +104,11 @@ public class Hologram
     return viewers.contains(player.getUniqueId().toString());
   }
 
-  public Vector3D nextPosition(HologramLine line,
-                               float offset) {
+  public Position nextPosition(HologramLine line,
+                               double offset) {
     double y = lines.indexOf(line) * offset;
 
-    return Vector3D.of(
+    return Position.of(
       position.getWorld(),
       position.getX(),
       position.getY() - y,
@@ -116,7 +116,7 @@ public class Hologram
     );
   }
 
-  public Vector3D nextPosition(HologramLine line) {
+  public Position nextPosition(HologramLine line) {
     return nextPosition(line, HologramLine.CUSTOM_NAME_VERTICAL_OFFSET);
   }
 
@@ -141,7 +141,7 @@ public class Hologram
     lines.remove(index);
 
     for (HologramLine line : lines) {
-      Vector3D nextLinePosition = nextPosition(line);
+      Position nextLinePosition = nextPosition(line);
       line.setPosition(nextLinePosition);
     }
   }
@@ -169,15 +169,15 @@ public class Hologram
 
   public static class Builder {
     private String id;
-    private Vector3D position;
+    private Position position;
     private List<HologramLine> lines;
     private RenderAuthorizer renderAuthorizer;
     private int renderDistance;
 
-    public Vector3D nextPosition() {
+    public Position nextPosition() {
       double y = lines.size() * HologramLine.CUSTOM_NAME_VERTICAL_OFFSET;
 
-      return Vector3D.of(
+      return Position.of(
         position.getWorld(),
         position.getX(),
         position.getY() - y,
@@ -191,7 +191,7 @@ public class Hologram
       return this;
     }
 
-    public Builder position(Vector3D position) {
+    public Builder position(Position position) {
       this.position = position;
 
       return this;

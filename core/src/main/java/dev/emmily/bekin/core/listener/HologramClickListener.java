@@ -6,17 +6,19 @@ import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
 import dev.emmily.bekin.api.spatial.raytracing.Ray;
 import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.joml.Vector3d;
 
-import java.util.Comparator;
 import java.util.List;
 
-public class HologramClickListener implements Listener {
+public class HologramClickListener
+  implements Listener {
   private final HologramRegistry hologramRegistry;
 
   public HologramClickListener(HologramRegistry hologramRegistry) {
@@ -29,7 +31,7 @@ public class HologramClickListener implements Listener {
     String world = player.getWorld().getName();
 
     Location eyeLocation = player.getEyeLocation();
-    Vector3D origin = Vector3D.fromBukkit(eyeLocation);
+    Position origin = Position.fromBukkit(eyeLocation);
 
     List<Hologram> nearbyHolograms = hologramRegistry.getNearbyHolograms(origin, 5);
 
@@ -40,42 +42,42 @@ public class HologramClickListener implements Listener {
     double yaw = Math.toRadians(eyeLocation.getYaw());
     double pitch = Math.toRadians(eyeLocation.getPitch());
 
-    Vector3D direction = Vector3D.of(
-      world,
+    Vector3d viewDirection = new Vector3d(
       -Math.sin(yaw) * Math.cos(pitch),
       -Math.sin(pitch),
       Math.cos(yaw) * Math.cos(pitch)
     );
 
-    Ray ray = Ray.trace(origin, direction);
-
-    ClickableHologramLine closestLine = null;
-    double closestDistance = Double.POSITIVE_INFINITY;
+    Ray ray = Ray.trace(new Vector3d(
+      eyeLocation.getX(),
+      eyeLocation.getY(),
+      eyeLocation.getZ()
+    ), viewDirection);
 
     for (Hologram hologram : nearbyHolograms) {
-      for (HologramLine line : hologram.getLines()) {
+      for (HologramLine line : hologram) {
         if (!(line instanceof ClickableHologramLine)) {
           continue;
         }
 
         ClickableHologramLine clickableLine = (ClickableHologramLine) line;
+        Position linePosition = clickableLine.getPosition();
 
-        BoundingBox boundingBox = BoundingBox.fromName(
-          clickableLine.getPosition(),
+        List<BoundingBox> boxes = BoundingBox.fromName(
+          linePosition.toJOML(),
           clickableLine.getContent().apply(player)
         );
 
-        double distance = ray.intersectionDistance(boundingBox);
+        for (BoundingBox boundingBox : boxes) {
+          boundingBox.display(Bukkit.getWorld("world"), Bukkit.getPluginManager().getPlugin("bekin"));
 
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestLine = clickableLine;
+          if (ray.intersectsBox(boundingBox)) {
+            clickableLine.onClick(player);
+
+            return;
+          }
         }
       }
-    }
-
-    if (closestLine != null) {
-      closestLine.onClick(player);
     }
   }
 }

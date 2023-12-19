@@ -5,7 +5,7 @@ import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
 import dev.emmily.bekin.api.hologram.registry.HologramRegistry;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.bekin.plugin.message.MessageMode;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
@@ -52,7 +52,7 @@ public class HologramCreateCommand
     Hologram hologram = Hologram
       .builder()
       .id(id)
-      .position(Vector3D.fromBukkit(player.getLocation()))
+      .position(Position.fromBukkit(player.getLocation()))
       .renderDistance(renderDistance)
       .addLine(HologramLine.line(TextProvider.staticText("Bekin")))
       .build();

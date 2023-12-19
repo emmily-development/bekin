@@ -2,7 +2,7 @@ package dev.emmily.bekin.plugin.command;
 
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.bekin.plugin.message.MessageMode;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
@@ -32,7 +32,7 @@ public class HologramMoveCommand
   public void runMoveCommand(@Sender Player player,
                              @Named("hologram") Hologram hologram) {
     Location bukkit = player.getLocation();
-    Vector3D newPosition = Vector3D.fromBukkit(bukkit);
+    Position newPosition = Position.fromBukkit(bukkit);
 
     hologramHandler.move(hologram, newPosition);
 

@@ -5,58 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35668b6e-b2ad-43eb-b278-70583700f66c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/util/protocol/ProtocolConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/util/version/SemanticVersion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/task/HologramLineUpdater.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/ArmorStandHologramHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/TextDisplayHologramHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/protocol/MinecraftProtocol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/a.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/Hologram.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/Hologram.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/handler/HologramHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/handler/HologramHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/HologramLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/HologramLine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/HologramLineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/HologramLineImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/AbstractLineDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/AbstractLineDecorator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/click/ClickableHologramLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/click/ClickableHologramLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/update/UpdatableHologramLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/update/UpdatableHologramLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/provider/TextProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/provider/TextProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/provider/fixed/StaticTextProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/provider/fixed/FixedTextProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/provider/i18n/MultiLanguageTextProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/click/action/HologramClickAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/click/action/HologramClickAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/click/action/teleport/TeleportClickAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/line/decorator/click/action/teleport/TeleportClickAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/registry/HologramRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/registry/HologramRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/spatial/HologramMBRConverter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/hologram/spatial/PrTreeRegistry.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/raytracing/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/raytracing/Ray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/tree/CopyOnWritePRTree.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/vectorial/BoundingBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/vectorial/BoundingBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/vectorial/Vector3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/vectorial/Vector3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/dev/emmily/bekin/core/BekinSetup.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/dev/emmily/bekin/core/BekinSetup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/vectorial/Vector3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/dev/emmily/bekin/api/spatial/vectorial/Position.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/main/java/dev/emmily/bekin/core/listener/HologramClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/dev/emmily/bekin/core/listener/HologramClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/HologramLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/codec/HologramDeserializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/HologramTemplate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/line/HologramLineTemplate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/line/decorator/AbstractLineTemplateDecorator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/line/decorator/click/ClickableLineTemplate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/line/decorator/click/action/HologramClickActionTemplate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/line/provider/TextProviderTemplate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/render/RenderAuthorizerFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loader/loader-api/src/main/java/dev/emmily/bekin/loader/api/hologram/render/RenderAuthorizerTemplate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramAddLineCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramAddLineCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramCreateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramCreateCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramMoveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramMoveCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramRemoveLineCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/command/HologramRemoveLineCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/loader/listener/ListenerLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/loader/listener/ListenerLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/module/InjectorModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/module/InjectorModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/module/listener/ListenerModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/plugin/src/main/java/dev/emmily/bekin/plugin/module/listener/ListenerModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin/src/main/resources/holograms/welcome.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/ArmorStandHologramHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/ArmorStandHologramHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/TextDisplayHologramHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/protocol/protocol-v1_20_R2/src/main/java/dev/emmily/bekin/protocol/v1_20_R2/TextDisplayHologramHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/protocol/protocol-v1_8_R3/src/main/java/dev/emmily/bekin/protocol/v1_8_R3/HologramHandlerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/protocol/protocol-v1_8_R3/src/main/java/dev/emmily/bekin/protocol/v1_8_R3/HologramHandlerImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,25 +56,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "jdk.selected.JAVA_MODULE": "corretto-1.8",
-    "last_opened_file_path": "/home/emmilydev/IdeaProjects/bekin",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-1.8&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/emmilydev/IdeaProjects/Minestom&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/protocol" />
@@ -114,8 +84,10 @@
     <option name="myCommands">
       <command value="mvn install -T 8" />
       <command value="open model-preview" />
-      <command value="open sophia" />
+      <command value="open sigma" />
+      <command value="open banks" />
       <command value="mvn clean install -T 8" />
+      <command value="open sophia" />
     </option>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -132,6 +104,14 @@
       <workItem from="1701619488736" duration="97000" />
       <workItem from="1701630682949" duration="2498000" />
       <workItem from="1701734654951" duration="18445000" />
+      <workItem from="1701901035223" duration="17247000" />
+      <workItem from="1701984770951" duration="7081000" />
+      <workItem from="1702068137781" duration="1864000" />
+      <workItem from="1702072628042" duration="11568000" />
+      <workItem from="1702096646702" duration="39000" />
+      <workItem from="1702101249202" duration="7597000" />
+      <workItem from="1702183749545" duration="3224000" />
+      <workItem from="1702488037296" duration="452000" />
     </task>
     <servers />
   </component>

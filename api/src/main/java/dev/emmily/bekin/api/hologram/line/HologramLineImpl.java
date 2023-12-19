@@ -1,7 +1,7 @@
 package dev.emmily.bekin.api.hologram.line;
 
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 
 import java.beans.ConstructorProperties;
 import java.util.Objects;
@@ -11,7 +11,7 @@ public class HologramLineImpl
   private String underlyingHologram;
   private transient int backingEntityId;
   private TextProvider content;
-  private Vector3D position;
+  private Position position;
 
   @ConstructorProperties("content")
   public HologramLineImpl(TextProvider content) {
@@ -49,12 +49,12 @@ public class HologramLineImpl
   }
 
   @Override
-  public Vector3D getPosition() {
+  public Position getPosition() {
     return position;
   }
 
   @Override
-  public void setPosition(Vector3D position) {
+  public void setPosition(Position position) {
     this.position = position;
   }
 

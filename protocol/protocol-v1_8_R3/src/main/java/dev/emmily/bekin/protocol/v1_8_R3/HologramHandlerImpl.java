@@ -3,8 +3,7 @@ package dev.emmily.bekin.protocol.v1_8_R3;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.bekin.protocol.v1_8_R3.protocol.MinecraftProtocol;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -23,7 +22,7 @@ public class HologramHandlerImpl
     WorldServer world = MinecraftProtocol.getWorld(hologram.getPosition().getWorld());
 
     for (HologramLine line : hologram) {
-      Vector3D position = hologram.nextPosition(line);
+      Position position = hologram.nextPosition(line);
       EntityArmorStand armorStand = new EntityArmorStand(
         world,
         position.getX(),
@@ -127,7 +126,7 @@ public class HologramHandlerImpl
 
   @Override
   public void move(Hologram hologram,
-                   Vector3D newPosition) {
+                   Position newPosition) {
     WorldServer world = MinecraftProtocol.getWorld(newPosition.getWorld());
     hologram.setPosition(newPosition);
 
@@ -139,7 +138,7 @@ public class HologramHandlerImpl
         throw unknownEntity(hologram, line);
       }
 
-      Vector3D position = hologram.nextPosition(line);
+      Position position = hologram.nextPosition(line);
       entity.setPosition(position.getX(), position.getY(), position.getZ());
       line.setPosition(position);
     }

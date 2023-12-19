@@ -4,7 +4,7 @@ import com.mojang.math.Transformation;
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.handler.HologramHandler;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.bekin.extensions.textdisplay.TextDisplayHologramLine;
 import dev.emmily.bekin.protocol.v1_20_R2.protocol.MinecraftProtocol;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy;
@@ -37,7 +37,7 @@ public class TextDisplayHologramHandler
     List<HologramLine> lines = hologram.getLines();
     for (int i = 0; i < lines.size(); i++) {
       TextDisplayHologramLine line = (TextDisplayHologramLine) lines.get(i);
-      Vector3D position;
+      Position position;
 
       if (i > 0) {
         position = hologram.nextPosition(line, ((TextDisplayHologramLine) lines.get(i - 1)).getDisplayHeight());
@@ -179,7 +179,7 @@ public class TextDisplayHologramHandler
 
   @Override
   public void move(Hologram hologram,
-                   Vector3D newPosition) {
+                   Position newPosition) {
     WorldServer world = MinecraftProtocol.getWorld(newPosition.getWorld());
     hologram.setPosition(newPosition);
 
@@ -191,7 +191,7 @@ public class TextDisplayHologramHandler
         throw unknownEntity(hologram, line);
       }
 
-      Vector3D position = hologram.nextPosition(line);
+      Position position = hologram.nextPosition(line);
       entity.p(position.getX(), position.getY(), position.getZ()); // set position
       line.setPosition(position);
     }

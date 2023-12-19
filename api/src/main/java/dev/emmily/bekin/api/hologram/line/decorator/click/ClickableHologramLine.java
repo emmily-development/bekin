@@ -3,14 +3,9 @@ package dev.emmily.bekin.api.hologram.line.decorator.click;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
 import dev.emmily.bekin.api.hologram.line.decorator.AbstractLineDecorator;
 import dev.emmily.bekin.api.hologram.line.decorator.click.action.HologramClickAction;
-import dev.emmily.bekin.api.spatial.vectorial.BoundingBox;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
-import dev.emmily.bekin.api.util.lang.LanguageProvider;
 import org.bukkit.entity.Player;
 
 import java.beans.ConstructorProperties;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**

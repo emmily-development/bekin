@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import dev.emmily.bekin.api.hologram.line.decorator.click.ClickableHologramLine;
 import dev.emmily.bekin.api.hologram.line.decorator.update.UpdatableHologramLine;
 import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -24,16 +24,19 @@ public interface HologramLine {
     return new HologramLineImpl(content);
   }
 
+  double ARMOR_STAND_HEIGHT = 1.975d;
   /**
    * The vertical offset between the top of an armor stand's hit-box and its custom name.
    */
-  float CUSTOM_NAME_VERTICAL_OFFSET = 0.25f;
+  double CUSTOM_NAME_VERTICAL_OFFSET = 0.25d;
 
   /**
    * The number of uppercase letters that represent a 1 block length.
    * This constant is used to calculate bounding box dimensions based on the length of the custom text.
    */
   int LETTERS_PER_BLOCK = 7;
+
+  float LETTER_SCALE_FACTOR = 0.14285714285f;
 
   String getUnderlyingHologram();
 
@@ -67,8 +70,8 @@ public interface HologramLine {
    *
    * @return The current position of the line.
    */
-  Vector3D getPosition();
+  Position getPosition();
 
   @ApiStatus.Internal
-  void setPosition(Vector3D position);
+  void setPosition(Position position);
 }

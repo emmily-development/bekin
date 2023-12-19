@@ -1,7 +1,7 @@
 package dev.emmily.bekin.api.hologram.registry;
 
 import dev.emmily.bekin.api.hologram.Hologram;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import dev.emmily.sigma.api.repository.CachedAsyncModelRepository;
 
 import java.util.ArrayList;
@@ -90,13 +90,13 @@ public class HologramRegistry {
     return hologramRepository.getAll();
   }
 
-  public List<Hologram> getNearbyHolograms(Vector3D origin,
+  public List<Hologram> getNearbyHolograms(Position origin,
                                            double distance) {
     List<Hologram> nearbyHolograms = new ArrayList<>();
 
     for (Hologram hologram : getAll()) {
       System.out.println("Iterating over all holograms");
-      Vector3D position = hologram.getPosition();
+      Position position = hologram.getPosition();
 
       if (!position.getWorld().equals(origin.getWorld())) {
         System.out.println("Different world");

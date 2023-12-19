@@ -2,8 +2,7 @@ package dev.emmily.bekin.api.hologram.handler;
 
 import dev.emmily.bekin.api.hologram.Hologram;
 import dev.emmily.bekin.api.hologram.line.HologramLine;
-import dev.emmily.bekin.api.hologram.line.provider.TextProvider;
-import dev.emmily.bekin.api.spatial.vectorial.Vector3D;
+import dev.emmily.bekin.api.spatial.vectorial.Position;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -73,7 +72,7 @@ public interface HologramHandler {
    * @param newPosition The position to move the hologram to.
    */
   void move(Hologram hologram,
-            Vector3D newPosition);
+            Position newPosition);
 
   static IllegalArgumentException unknownEntity(Hologram hologram,
                                                 HologramLine line) {
